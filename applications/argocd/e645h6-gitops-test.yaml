@@ -1,20 +1,20 @@
-project: {{cookiecutter.licence_plate}}
+project: e645h6
 kind: Application
 metadata:
-  name: {{cookiecutter.app_name}}-gitops-test
+  name: lea-api-gitops-test
 spec:
   destination:
     name: ''
-    namespace: {{cookiecutter.licence_plate}}-test
+    namespace: e645h6-test
     server: 'https://kubernetes.default.svc'
   source:
     path: charts/gitops
-    repoURL: 'git@github.com:bcgov-c/tenant-gitops-{{cookiecutter.licence_plate}}.git'
+    repoURL: 'git@github.com:bcgov-c/tenant-gitops-e645h6.git'
     targetRevision: test
     helm:
       valueFiles:
         - $values/deploy/test_values.yaml
-  project: {{cookiecutter.licence_plate}}
+  project: e645h6
   syncPolicy:
     automated:
       prune: true

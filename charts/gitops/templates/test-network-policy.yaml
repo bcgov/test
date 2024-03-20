@@ -5,18 +5,18 @@
 # if you want to test a new server and port
 
 
-{{ "{{" }}- if .Values.telnet.enabled {{ "}}" }}
+{{- if .Values.telnet.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet-egress-webproxy
+  name: {{ include "chart.fullname" . }}-telnet-egress-webproxy
   labels:
-    app: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet
-{{ "{{" }}- include "common.labels" .Values.telnet.commonLabels {{ "}}" }}
+    app: {{ include "chart.fullname" . }}-telnet
+{{- include "common.labels" .Values.telnet.commonLabels }}
 spec:
   podSelector:
     matchLabels:
-      app: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet
+      app: {{ include "chart.fullname" . }}-telnet
   egress:
     - ports:
         - protocol: TCP
@@ -30,10 +30,10 @@ spec:
         - ipBlock:
             cidr: 142.34.229.4/32 # egress to gold
         - ipBlock:
-            cidr: {{ "{{" }} .Values.telnet.diamEgressIP {{ "}}" }} # DIAM common-sso.
+            cidr: {{ .Values.telnet.diamEgressIP }} # DIAM common-sso.
   
             
   policyTypes:
     - Egress
 
-{{ "{{" }}- end {{ "}}" }}
+{{- end }}

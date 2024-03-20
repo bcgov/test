@@ -14,23 +14,26 @@ nginx:
     enabled: true
     annotations:
       aviinfrasetting.ako.vmware.com/name: "dataclass-medium"
-    hostname: nginx-{{cookiecutter.licence_plate}}-test.apps.emerald.devops.gov.bc.ca
-  version: "{{ cookiecutter.nginx_version }}"
+    hostname: nginx-e645h6-prod.apps.emerald.devops.gov.bc.ca
+  version: "15.11.0"
+  commonAnnotations:
+    datree.skip/CUSTOM_WORKLOAD_INCORRECT_NETWORK_POLICIES: irrelevant for deployments, skipping.
+    datree.skip/CUSTOM_REPLICA_COUNT_PROD: skip for default helm.
   image:
     pullPolicy: Always
   podLabels:
-    environment: test
-    env: test
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    environment: prod
+    env: prod
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
   commonLabels:
-    environment: test
-    env: test
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    environment: prod
+    env: prod
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
-    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+    app.kubernetes.io/part-of: "abcd"
   replicaCount: 1
   resources:
     limits:
@@ -46,10 +49,10 @@ postgresql:
   image:
     pullPolicy: Always
   commonLabels:
-    environment: test
-    env: test
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    environment: prod
+    env: prod
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
   primary:
     podSecurityContext:
@@ -59,16 +62,16 @@ postgresql:
     networkPolicy:
       enabled: false
     labels:
-      environment: test
-      env: test
-      owner: "{{cookiecutter.team_name}}"
-      project: "{{cookiecutter.project_name}}"
+      environment: prod
+      env: prod
+      owner: "ntt-lea"
+      project: "abcd"
       DataClass: "Medium"
     podLabels:
-      environment: test
-      env: test
-      owner: "{{cookiecutter.team_name}}"
-      project: "{{cookiecutter.project_name}}"
+      environment: prod
+      env: prod
+      owner: "ntt-lea"
+      project: "abcd"
       DataClass: "Medium"
     resources:
       limits:
@@ -147,26 +150,26 @@ postgresql-ha:
         cpu: 20m
 
   commonLabels:
-    environment: test
-    env: test
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    environment: prod
+    env: prod
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
-    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+    app.kubernetes.io/part-of: "abcd"
 
 telnet:
   enabled: true
-  goldService: "sso-e27db1-dev.apps.gold.devops.gov.bc.ca" # testing connectivity from emerald to a service GOLD using telnet
+  goldService: "sso-e27db1-dev.apps.gold.devops.gov.bc.ca" # tetsing connectivity from emerald to a service GOLD using telnet
   goldPort: 80
-  diamSSO: test.common-sso.justice.gov.bc.ca # testing outbound to DIAM Common-SSO
+  diamSSO: common-sso.justice.gov.bc.ca # testing outbound to DIAM Common-SSO
   diamPort: 80
-  diamEgressIP: 142.34.51.102/32
+  diamEgressIP: 142.34.208.118/32 # PROD DIAM IP
   publicService: "https://docker.io" # testing connectivity from emerald to internet via web proxy using curl
   gitHubUrl: "https://github.com/bcgov/JAG-GITOPS-TEMPLATE.git" # test connectivity outbound to github via git clone
   commonLabels:
-    environment: test
-    env: test
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    environment: prod
+    env: prod
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
-    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+    app.kubernetes.io/part-of: "abcd"

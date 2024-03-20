@@ -14,8 +14,8 @@ nginx:
     enabled: true
     annotations:
       aviinfrasetting.ako.vmware.com/name: "dataclass-medium"
-    hostname: nginx-{{cookiecutter.licence_plate}}-dev.apps.emerald.devops.gov.bc.ca
-  version: "{{ cookiecutter.nginx_version }}"
+    hostname: nginx-e645h6-dev.apps.emerald.devops.gov.bc.ca
+  version: "15.11.0"
   commonAnnotations:
     datree.skip/CUSTOM_WORKLOAD_INCORRECT_NETWORK_POLICIES: irrelevant for deployments, skipping.
   image:
@@ -23,16 +23,16 @@ nginx:
   podLabels:
     environment: dev
     env: development
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
   commonLabels:
     environment: dev
     env: development
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
-    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+    app.kubernetes.io/part-of: "abcd"
   replicaCount: 1
   resources:
     limits:
@@ -50,8 +50,8 @@ postgresql:
   commonLabels:
     environment: dev
     env: development
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
   primary:
     podSecurityContext:
@@ -63,14 +63,14 @@ postgresql:
     labels:
       environment: dev
       env: development
-      owner: "{{cookiecutter.team_name}}"
-      project: "{{cookiecutter.project_name}}"
+      owner: "ntt-lea"
+      project: "abcd"
       DataClass: "Medium"
     podLabels:
       environment: dev
       env: development
-      owner: "{{cookiecutter.team_name}}"
-      project: "{{cookiecutter.project_name}}"
+      owner: "ntt-lea"
+      project: "abcd"
       DataClass: "Medium"
     resources:
       limits:
@@ -151,10 +151,10 @@ postgresql-ha:
   commonLabels:
     environment: dev
     env: development
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
-    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+    app.kubernetes.io/part-of: "abcd"
 
 telnet:
   enabled: true
@@ -168,7 +168,7 @@ telnet:
   commonLabels:
     environment: dev
     env: development
-    owner: "{{cookiecutter.team_name}}"
-    project: "{{cookiecutter.project_name}}"
+    owner: "ntt-lea"
+    project: "abcd"
     DataClass: "Medium"
-    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+    app.kubernetes.io/part-of: "abcd"

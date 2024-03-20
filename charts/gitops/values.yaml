@@ -1,5 +1,5 @@
-# {{ cookiecutter.app_name }}-charts/values.yaml
-my_app_name: "{{ cookiecutter.app_name }}"
+# lea-api-charts/values.yaml
+my_app_name: "lea-api"
 
 nginx:
   enabled: false
@@ -12,13 +12,13 @@ nginx:
     enabled: false
   ingress:
     enabled: true
-    hostname: nginx-{{cookiecutter.licence_plate}}-dev.apps.emerald.devops.gov.bc.ca
-  version: "{{ cookiecutter.nginx_version }}"
+    hostname: nginx-e645h6-dev.apps.emerald.devops.gov.bc.ca
+  version: "15.11.0"
 
 postgresql:
   enabled: false
   chart: "bitnami/postgresql"
-  version: "{{ cookiecutter.postgresql_version }}"
+  version: "14.1.1"
 
 postgresql-ha:
   enabled: false
@@ -54,11 +54,11 @@ postgresql-ha:
         datree.skip/CONTAINERS_MISSING_LIVENESSPROBE_KEY: "skipping this policy"
         datree.skip/WORKLOAD_INVALID_LABELS_VALUE: "skipping this policy"
   chart: "bitnami/postgresql-ha"
-  version: "{{ cookiecutter.postgresqlha_version }}"
+  version: "14.0.0"
   persistence:
     size: 256Mi
 
 aspnet-core:
   enabled: false
   chart: "bitnami/aspnetcore"
-  version: "{{ cookiecutter.aspnetcore_version }}"
+  version: "5.5.0"

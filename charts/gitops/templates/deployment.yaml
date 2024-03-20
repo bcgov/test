@@ -4,32 +4,32 @@
 # rule for your communication. Use the telnet values to make changes
 # if you want to test a new server and port
 
-{{ "{{" }}- if .Values.telnet.enabled {{ "}}" }}
+{{- if .Values.telnet.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet
+  name: {{ include "chart.fullname" . }}-telnet
   labels:
-    app: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet
-    {{ "{{" }}- include "common.labels" .Values.telnet.commonLabels {{ "}}" }}
+    app: {{ include "chart.fullname" . }}-telnet
+    {{- include "common.labels" .Values.telnet.commonLabels }}
   annotations: 
     datree.skip/CUSTOM_REPLICA_COUNT_PROD: skip for default helm.
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet
+      app: {{ include "chart.fullname" . }}-telnet
   template:
     metadata:
       labels:
-        app: {{ "{{" }} include "chart.fullname" . {{ "}}" }}-telnet
-        {{ "{{" }}- include "common.labels" .Values.telnet.commonLabels | nindent 4 {{ "}}" }}
+        app: {{ include "chart.fullname" . }}-telnet
+        {{- include "common.labels" .Values.telnet.commonLabels | nindent 4 }}
     spec:
       containers:
         - name: telnet-container
           image: sookeke/alpine-telnet:v1
           imagePullPolicy: Always
-          args: ["sh", "-c", "while true; do telnet {{ "{{" }} .Values.telnet.goldService {{ "}}" }} {{ "{{" }} .Values.telnet.goldPort {{ "}}" }}; telnet {{ "{{" }} .Values.telnet.diamSSO {{ "}}" }} {{ "{{" }} .Values.telnet.diamPort {{ "}}" }}; curl -v {{ "{{" }} .Values.telnet.publicService {{ "}}" }}; git clone {{ "{{" }} .Values.telnet.gitHubUrl {{ "}}" }}; sleep 45; done"]
+          args: ["sh", "-c", "while true; do telnet {{ .Values.telnet.goldService }} {{ .Values.telnet.goldPort }}; telnet {{ .Values.telnet.diamSSO }} {{ .Values.telnet.diamPort }}; curl -v {{ .Values.telnet.publicService }}; git clone {{ .Values.telnet.gitHubUrl }}; sleep 45; done"]
           resources:
             limits:
               cpu: "10m"
@@ -48,16 +48,16 @@ spec:
             exec:
               command:
                 - "telnet"
-                - "{{ "{{" }} .Values.telnet.Server {{ "}}" }}"
-                - "{{ "{{" }} .Values.telnet.Port {{ "}}" }}"
+                - "{{ .Values.telnet.Server }}"
+                - "{{ .Values.telnet.Port }}"
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             exec:
               command:
                 - "telnet"
-                - "{{ "{{" }} .Values.telnet.Server {{ "}}" }}"
-                - "{{ "{{" }} .Values.telnet.Port {{ "}}" }}"
+                - "{{ .Values.telnet.Server }}"
+                - "{{ .Values.telnet.Port }}"
             initialDelaySeconds: 5
             periodSeconds: 10
-{{ "{{" }}- end {{ "}}" }}
+{{- end }}
