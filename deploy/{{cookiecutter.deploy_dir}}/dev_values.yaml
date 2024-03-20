@@ -1,0 +1,174 @@
+# Base ngnix web server
+nginx:
+  enabled: true
+  chart: "bitnami/nginx"
+  service:
+    type: ClusterIP
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  networkPolicy:
+    enabled: false
+  ingress:
+    enabled: true
+    annotations:
+      aviinfrasetting.ako.vmware.com/name: "dataclass-medium"
+    hostname: nginx-{{cookiecutter.licence_plate}}-dev.apps.emerald.devops.gov.bc.ca
+  version: "{{ cookiecutter.nginx_version }}"
+  commonAnnotations:
+    datree.skip/CUSTOM_WORKLOAD_INCORRECT_NETWORK_POLICIES: irrelevant for deployments, skipping.
+  image:
+    pullPolicy: Always
+  podLabels:
+    environment: dev
+    env: development
+    owner: "{{cookiecutter.team_name}}"
+    project: "{{cookiecutter.project_name}}"
+    DataClass: "Medium"
+  commonLabels:
+    environment: dev
+    env: development
+    owner: "{{cookiecutter.team_name}}"
+    project: "{{cookiecutter.project_name}}"
+    DataClass: "Medium"
+    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 50m
+      memory: 256Mi
+    requests:
+      memory: 100Mi
+      cpu: 20m
+
+# Normal Postgres DB instance
+postgresql:
+  enabled: false
+  image:
+    pullPolicy: Always
+  commonLabels:
+    environment: dev
+    env: development
+    owner: "{{cookiecutter.team_name}}"
+    project: "{{cookiecutter.project_name}}"
+    DataClass: "Medium"
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+    networkPolicy:
+      enabled: false
+    labels:
+      environment: dev
+      env: development
+      owner: "{{cookiecutter.team_name}}"
+      project: "{{cookiecutter.project_name}}"
+      DataClass: "Medium"
+    podLabels:
+      environment: dev
+      env: development
+      owner: "{{cookiecutter.team_name}}"
+      project: "{{cookiecutter.project_name}}"
+      DataClass: "Medium"
+    resources:
+      limits:
+        cpu: 200m
+        memory: 1Gi
+      requests:
+        memory: 256Mi
+        cpu: 100m
+
+#  this will create postgres database with HA and 2 clusters with backup. for prod change this to 3
+postgresql-ha:
+  enabled: true
+  backup:
+    enabled: true
+    image:
+      pullPolicy: Always
+    cronjob:
+      containerSecurityContext:
+        enabled: false
+      podSecurityContext:
+        enabled: false
+      schedule: "*/5 * * * *"
+      resources:
+        limits:
+          cpu: 50m
+          memory: 256Mi
+        requests:
+          memory: 100Mi
+          cpu: 20m
+      storage:
+        size: 256Mi
+
+  postgresql:
+    image:
+      pullPolicy: Always
+    podSecurityContext:
+      enabled: false
+    persistence:
+      size: 256Mi
+    replicaCount: 2
+    containerSecurityContext:
+      enabled: false
+    resources:
+      limits:
+        cpu: 10m
+        memory: 1Gi
+      requests:
+        memory: 256Mi
+        cpu: 2m
+  pgdumpall:
+    podSecurityContext:
+      enabled: false
+    persistence:
+      size: 256Mi
+    containerSecurityContext:
+      enabled: false
+    resources:
+      limits:
+        cpu: 20m
+        memory: 1Gi
+      requests:
+        memory: 256Mi
+        cpu: 5m
+
+  pgpool:
+    containerSecurityContext:
+      enabled: false
+    image:
+      pullPolicy: Always
+    resources:
+      limits:
+        cpu: 20m
+        memory: 256Mi
+      requests:
+        memory: 100Mi
+        cpu: 5m
+
+  commonLabels:
+    environment: dev
+    env: development
+    owner: "{{cookiecutter.team_name}}"
+    project: "{{cookiecutter.project_name}}"
+    DataClass: "Medium"
+    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
+
+telnet:
+  enabled: true
+  goldService: "sso-e27db1-dev.apps.gold.devops.gov.bc.ca" # tetsing connectivity from emerald to a service GOLD using telnet
+  goldPort: 80
+  diamSSO: dev.common-sso.justice.gov.bc.ca # testing outbound to DIAM Common-SSO
+  diamEgressIP: 142.34.102.72/32
+  diamPort: 80
+  publicService: "https://docker.io" # testing connectivity from emerald to internet via web proxy using curl
+  gitHubUrl: "https://github.com/bcgov/JAG-GITOPS-TEMPLATE.git" # test connectivity outbound to github via git clone
+  commonLabels:
+    environment: dev
+    env: development
+    owner: "{{cookiecutter.team_name}}"
+    project: "{{cookiecutter.project_name}}"
+    DataClass: "Medium"
+    app.kubernetes.io/part-of: "{{cookiecutter.project_name}}"
